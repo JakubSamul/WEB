@@ -1,11 +1,38 @@
 <template>
-  <div class="home">
-    <h1>spacer</h1>
+  <div class="wrapper">
+    <div class="search">
+      <label for="search">Search<input id="search" name="search" /></label>
+    </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: 'HomeView',
+  name: 'NasaSearch',
 };
 </script>
+<style lang="scss" scoped>
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 30px;
+    width: 100%;
+  }
+
+  .search {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+
+    label {
+      font-family: Montserrat, sans-serif;
+    }
+
+    input {
+      height: 30px;
+      border: 0;
+      border-bottom: 1px solid block;
+    }
+  }
+</style>
