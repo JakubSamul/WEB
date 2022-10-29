@@ -1,13 +1,24 @@
 <template>
   <div class="wrapper">
     <div class="search">
-      <label for="search">Search<input id="search" name="search" /></label>
+      <label for="search">Search
+        <input id="search" name="search" v-model="searchVolve" @input="handleInput" /></label>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: 'NasaSearch',
+  data() {
+    return {
+      searchVolve: '',
+    };
+  },
+  methods: {
+    handleInput() {
+      console.log(this.searchVolve);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
