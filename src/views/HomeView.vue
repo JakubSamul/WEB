@@ -7,6 +7,10 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
+
+const API = 'https://images-api.nasa.gov/search';
+
 export default {
   name: 'NasaSearch',
   data() {
@@ -16,7 +20,13 @@ export default {
   },
   methods: {
     handleInput() {
-      console.log(this.searchVolve);
+      axios.get(`${API}?q=${this.searchVolve}&media_type=image`)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
@@ -34,7 +44,7 @@ export default {
   .search {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 250px;
 
     label {
       font-family: Montserrat, sans-serif;
