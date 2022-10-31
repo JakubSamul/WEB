@@ -1,8 +1,18 @@
 <template>
-  <div class="wrapper">
-    <Background />
-    <Claim />
-    <SearchImput v-model="searchValue" @input="handleInput" />
+  <div :class="[{ flexStart: step === 1 }, 'wrapper']">
+    <transition name="slide">
+      <img src="./assets/logo.png" alt="description of image" class="logo" v-if="step === 1">
+    </transition>
+    <transition name="fond">
+      <Background v-if="step === 0" />
+    </transition>
+    <Claim v-if="step === 0" />
+    <SearchImput v-model="searchValue" @input="handleInput" :dark="step === 1" />
+    <div class="reasults">
+      <div v-for="item in reasults">
+        <p>{{ item.links[0].href }}</p>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -23,6 +33,8 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      step: 0,
       searchVolve: '',
       results: [],
     };
@@ -30,10 +42,13 @@ export default {
   methods: {
     // eslint-disable-next-line
     handleInput: debounce(function () {
+      this.loading = true;
       console.log(this.searchValue);
       axios.get(`${API}?q=${this.searchVolve}&media_type=image`)
         .then((response) => {
           this.results = response.data.collection.items;
+          this.loading = false;
+          this.step = 1;
         })
         .catch((error) => {
           console.log(error);
@@ -58,8 +73,25 @@ body {
   padding: 0;
 }
 
+.fond-enter-active, .fond-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fond-enter, .fond-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: margin-top 1s ease;
+}
+
+.slide-enter, .slide-leave-to {
+  margin-top: -50px;
+}
+
 .wrapper {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   margin: 0;
@@ -67,5 +99,14 @@ body {
   width: 100%;
   min-height: 100vh;
   justify-content: center;
+
+  &.flexStart {
+    justify-content: flex-start;
+  }
+}
+
+.logo {
+  position: absolute;
+  top: 40px;
 }
 </style>
