@@ -3,16 +3,16 @@
     <transition name="slide">
       <img src="./assets/logo.png" alt="description of image" class="logo" v-if="step === 1">
     </transition>
-    <transition name="fond">
+    <transition name="fode">
       <Background v-if="step === 0" />
     </transition>
     <Claim v-if="step === 0" />
     <SearchImput v-model="searchValue" @input="handleInput" :dark="step === 1" />
-    <div class="reasults">
-      <div v-for="item in reasults">
-        <p>{{ item.links[0].href }}</p>
-      </div>
+    <div class="results" v-if="results && !loading && step ===1">
+      <Item v-for="item in results" :item="item" :key="item.data[0].nasa_id" 
+      @click.native="handleModelOpen(item)" />
     </div>
+    <Model v-if="modelOpen" :item="modelItem" @closeModel="modelOpen = false" />
   </div>
 </template>
 <script>
@@ -21,6 +21,8 @@ import debounce from 'lodash.debounce';
 import Claim from '@/components/Claim.vue';
 import SearchImput from '@/components/SearchImput.vue';
 import Background from '@/components/Background.vue';
+import Item from '@/components/Item.vue';
+import Model from '@/components/Model.vue';
 
 const API = 'https://images-api.nasa.gov/search';
 
@@ -28,11 +30,15 @@ export default {
   name: 'App',
   components: {
     Background,
+    Item,
+    Model,
     Claim,
     SearchImput,
   },
   data() {
     return {
+      modelOpen: false,
+      modelItem: null,
       loading: false,
       step: 0,
       searchVolve: '',
@@ -40,6 +46,10 @@ export default {
     };
   },
   methods: {
+    handleModelOpen(item) {
+      this.modelOpen = true;
+      this.modelItem = item;
+    },
     // eslint-disable-next-line
     handleInput: debounce(function () {
       this.loading = true;
@@ -73,11 +83,11 @@ body {
   padding: 0;
 }
 
-.fond-enter-active, .fond-leave-active {
+.fode-enter-active, .fode-leave-active {
   transition: opacity 1s ease;
 }
 
-.fond-enter, .fond-leave-to {
+.fode-enter, .fode-leave-to {
   opacity: 0;
 }
 
@@ -108,5 +118,16 @@ body {
 .logo {
   position: absolute;
   top: 40px;
+}
+
+.results {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 </style>
