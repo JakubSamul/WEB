@@ -9,9 +9,10 @@
     <Claim v-if="step === 0" />
     <SearchImput v-model="searchValue" @input="handleInput" :dark="step === 1" />
     <div class="results" v-if="results && !loading && step ===1">
-      <Item v-for="item in results" :item="item" :key="item.data[0].nasa_id" 
-      @click.native="handleModelOpen(item)" />
+      <Item v-for="item in results" :item="item" :key="item.data[0].
+      nasa_id" @click.enter="handleModelOpen(item)" />
     </div>
+    <div class="loader" v-if="step === 1 && loading" />
     <Model v-if="modelOpen" :item="modelItem" @closeModel="modelOpen = false" />
   </div>
 </template>
@@ -41,7 +42,7 @@ export default {
       modelItem: null,
       loading: false,
       step: 0,
-      searchVolve: '',
+      searchValue: '',
       results: [],
     };
   },
@@ -54,7 +55,7 @@ export default {
     handleInput: debounce(function () {
       this.loading = true;
       console.log(this.searchValue);
-      axios.get(`${API}?q=${this.searchVolve}&media_type=image`)
+      axios.get(`${API}?q=${this.searchValue}&media_type=image`)
         .then((response) => {
           this.results = response.data.collection.items;
           this.loading = false;
@@ -112,6 +113,42 @@ body {
 
   &.flexStart {
     justify-content: flex-start;
+  }
+}
+
+.loader {
+  margin-top: 100px;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+
+  @media (min-width: 768px) {
+    width: 90px;
+    height: 90px;
+  }
+}
+.loader:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #1e3d4a;
+  border-color: #1e3d4a transparent #1e3d4a transparent;
+  animation: loader 1.2s linear infinite;
+
+  @media (min-width: 768px) {
+    width: 90px;
+    height: 90px;
+  }
+}
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

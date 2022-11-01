@@ -33,7 +33,7 @@ export default {
   mounted() {
     this.photo = this.item.links[0].href;
     this.title = this.item.data[0].title;
-    this.description = this.item.data[0].description.substring(0,200);
+    this.description = this.item.data[0].description.substring(0, 200);
   },
 };
 </script>
@@ -45,7 +45,6 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-  
     @media (min-width: 1024px) {
       max-width: 70%;
       height: 60%;
@@ -118,5 +117,9 @@ export default {
 
   .description {
     color: #333;
+  }
+
+  .title {
+    color: #1e3d4a;
   }
 </style>
