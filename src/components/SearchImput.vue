@@ -1,12 +1,12 @@
 <template>
-    <input id="search" name="search" :class="{ dark }" :value="value" @input="handleChange" />
+    <input id="search" name="search" :class="{ dark }" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"/>
 </template>
 
 <script>
 export default {
   name: 'SearchImput',
   props: {
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },
@@ -15,9 +15,10 @@ export default {
       required: false,
     },
   },
-  method: {
+  emits: ['update:modelValue'],
+  methods: {
     handleChange(e) {
-      this.$emit('input', e.target.value);
+      this.$emit('update:modelValue', e.target.value);
     },
   },
 };
