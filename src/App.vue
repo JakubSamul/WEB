@@ -64,7 +64,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    }, 500),
+    }, 1000),
   },
 };
 </script>
